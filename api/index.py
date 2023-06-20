@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import send_file
+import requests
 app = Flask(__name__)
 
 @app.route('/')
@@ -18,4 +19,9 @@ def add_job(description):
 # Implement adding a resume to a job
 @app.route('/jobs/<int:id>/submit')
 def submit_resume(id):
-    return str(id)
+    if request.method == 'POST':
+        # Implement adding a resume to a job
+        resume = request.form('resume')
+        return "You applied to Job #" + id + " with resume " + resume
+    else:
+        return "Error request type"
