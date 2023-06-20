@@ -10,12 +10,12 @@ def home():
 def about():
     return 'About'
 
-# Implement Adding a Job to the Database
-@app.route('/jobs/add')
-def add_job():
-    return 'Add Job'
+# Implement adding a job to the database
+@app.route('/jobs/add/<description>')
+def add_job(description):
+    return description
 
-#implement A Resume to 
+# Implement adding a resume to a job
 @app.route('/jobs/<int:id>/submit')
 def submit_resume(id):
     return str(id)
