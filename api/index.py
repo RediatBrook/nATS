@@ -1,11 +1,11 @@
 from flask import Flask
-from flask import send_file
+from flask import render_template
 import requests
 app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return send_file('./frontend/index.html')
+    return render_template('index.html')
 
 @app.route('/about')
 def about():
