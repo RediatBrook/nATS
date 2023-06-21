@@ -66,3 +66,7 @@ def downloadFromS3():
     text = response['Body'].read().decode('utf-8')
 
     return "Downloaded text from S3: " + text
+
+@app.route("/applicants")
+def applicants():
+    return render_template('applicants.html')

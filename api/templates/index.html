@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>nATS</title>
-    <link rel="icon" type="image/x-icon" href="">
+    <title>notATS</title>
+    <link rel="icon" type="image/x-icon" href="/static/logo2.PNG">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
 <style>
     body {
       background-color: #f8f9fa;
-      padding: 20px;
     }
     
     .container {
@@ -18,6 +17,7 @@
       border-radius: 5px;
       padding: 20px;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
     }
     
     h1, h2 {
@@ -58,13 +58,50 @@
     .resume-section p {
       margin: 0;
     }
+
+    #mainNav{
+      padding: 30px;
+      background-color: #000000;
+      color: #ffffff;
+      width: 80%;
+      margin: auto;
+    }
   </style>
 <body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary " id="mainNav">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 nav-underline">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="./">Jobs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="./applicants">Applicants</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#">Matches</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#">Insights</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#">Settings</a>
+          </li>
+        </ul>
+        <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" >
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
     <div class="container">
-        <h1>New ATS Platform Demo</h1>
         
         <!-- Job Listings -->
-        <h2>Job Listings</h2>
         
         <div class="row" id="jobListings">
           <div class="col-md-6">
@@ -89,7 +126,6 @@
         </div>
         
         <!-- Create New Job Listing Form -->
-        <h2>Create New Job Listing</h2>
         <form onsubmit="createJobListing(event)">
           <div class="form-group">
             <label for="jobTitle">Job Title</label>
@@ -104,87 +140,6 @@
             <textarea class="form-control" id="jobDescription" rows="3" required></textarea>
           </div>
           <button type="submit" class="btn btn-primary" style="margin-top: 20px;">Create Job Listing</button>
-        </form>
-        
-        <!-- Candidate Applications -->
-        <h2>Candidate Applications</h2>
-        
-        <div class="row" id="candidateApplications">
-          <div class="col-md-6">
-            <div class="applicant-card">
-              <h4>John Doe</h4>
-              <p>Software Engineer</p>
-              <p>Job ID: 123</p>
-              <div class="resume-section">
-                <h5>Skills</h5>
-                <p>HTML, CSS, JavaScript</p>
-              </div>
-              <div class="resume-section">
-                <h5>Education</h5>
-                <p>Bachelor of Science in Computer Science</p>
-                <p>University of Example</p>
-              </div>
-              <div class="resume-section">
-                <h5>Experience</h5>
-                <p>Software Engineer Intern</p>
-                <p>Example Company</p>
-              </div>
-              <button class="delete-button" onclick="deleteCard(this)">Delete</button>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="applicant-card">
-              <h4>Jane Smith</h4>
-              <p>UX Designer</p>
-              <p>Job ID: 456</p>
-              <div class="resume-section">
-                <h5>Skills</h5>
-                <p>UI/UX Design, Wireframing</p>
-              </div>
-              <div class="resume-section">
-                <h5>Education</h5>
-                <p>Bachelor of Fine Arts in Design</p>
-                <p>Example University</p>
-              </div>
-              <div class="resume-section">
-                <h5>Experience</h5>
-                <p>UX Design Intern</p>
-                <p>Design Studio XYZ</p>
-              </div>
-              <button class="delete-button" onclick="deleteCard(this)">Delete</button>
-            </div>
-          </div>
-          <!-- Add more candidate application cards here -->
-        </div>
-        
-        <!-- Create New Applicant Card Form -->
-        <h2>Create New Applicant</h2>
-        <form onsubmit="createApplicant(event)">
-          <div class="form-group">
-            <label for="applicantName">Name</label>
-            <input type="text" class="form-control" id="applicantName" required>
-          </div>
-          <div class="form-group">
-            <label for="applicantJob">Job</label>
-            <input type="text" class="form-control" id="applicantJob" required>
-          </div>
-          <div class="form-group">
-            <label for="applicantJobId">Job ID</label>
-            <input type="number" class="form-control" id="applicantJobId" required>
-          </div>
-          <div class="form-group">
-            <label for="applicantSkills">Skills</label>
-            <textarea class="form-control" id="applicantSkills" rows="3" required></textarea>
-          </div>
-          <div class="form-group">
-            <label for="applicantEducation">Education</label>
-            <textarea class="form-control" id="applicantEducation" rows="3" required></textarea>
-          </div>
-          <div class="form-group">
-            <label for="applicantExperience">Experience</label>
-            <textarea class="form-control" id="applicantExperience" rows="3" required></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary" style="margin-top: 20px;">Create Applicant</button>
         </form>
       </div>
       <script>

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>notATS</title>
+    <link rel="icon" type="image/x-icon" href="/static/logo2.PNG">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+<style>
+    body {
+      background-color: #f8f9fa;
+    }
+    
+    .container {
+      background-color: #ffffff;
+      border-radius: 5px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+    }
+    
+    h1, h2 {
+      color: #343a40;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .job-card,
+    .applicant-card {
+      position: relative;
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid #dee2e6;
+      border-radius: 5px;
+      background-color: #f8f9fa;
+    }
+    
+    .delete-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 0;
+      border: none;
+      background: none;
+      color: red;
+      cursor: pointer;
+    }
+    
+    .resume-section {
+      margin-bottom: 20px;
+    }
+    
+    .resume-section h5 {
+      margin-bottom: 10px;
+    }
+    
+    .resume-section p {
+      margin: 0;
+    }
+
+    #mainNav{
+      padding: 30px;
+      background-color: #000000;
+      color: #ffffff;
+      width: 80%;
+      margin: auto;
+    }
+  </style>
+<body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary " id="mainNav">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 nav-underline">
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="./">Jobs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Applicants</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#">Matches</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#">Insights</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#">Settings</a>
+          </li>
+        </ul>
+        <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" >
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+  <div class="container">
+  
+    <!-- Candidate Applications -->
+    
+    <div class="row" id="candidateApplications">
+      <div class="col-md-6">
+        <div class="applicant-card">
+          <h4>John Doe</h4>
+          <p>Software Engineer</p>
+          <p>Job ID: 123</p>
+          <div class="resume-section">
+            <h5>Skills</h5>
+            <p>HTML, CSS, JavaScript</p>
+          </div>
+          <div class="resume-section">
+            <h5>Education</h5>
+            <p>Bachelor of Science in Computer Science</p>
+            <p>University of Example</p>
+          </div>
+          <div class="resume-section">
+            <h5>Experience</h5>
+            <p>Software Engineer Intern</p>
+            <p>Example Company</p>
+          </div>
+          <button class="delete-button" onclick="deleteCard(this)">Delete</button>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="applicant-card">
+          <h4>Jane Smith</h4>
+          <p>UX Designer</p>
+          <p>Job ID: 456</p>
+          <div class="resume-section">
+            <h5>Skills</h5>
+            <p>UI/UX Design, Wireframing</p>
+          </div>
+          <div class="resume-section">
+            <h5>Education</h5>
+            <p>Bachelor of Fine Arts in Design</p>
+            <p>Example University</p>
+          </div>
+          <div class="resume-section">
+            <h5>Experience</h5>
+            <p>UX Design Intern</p>
+            <p>Design Studio XYZ</p>
+          </div>
+          <button class="delete-button" onclick="deleteCard(this)">Delete</button>
+        </div>
+      </div>
+      <!-- Add more candidate application cards here -->
+    </div>
+    
+    <!-- Create New Applicant Card Form -->
+    <form onsubmit="createApplicant(event)">
+      <div class="form-group">
+        <label for="applicantName">Name</label>
+        <input type="text" class="form-control" id="applicantName" required>
+      </div>
+      <div class="form-group">
+        <label for="applicantJob">Job</label>
+        <input type="text" class="form-control" id="applicantJob" required>
+      </div>
+      <div class="form-group">
+        <label for="applicantJobId">Job ID</label>
+        <input type="number" class="form-control" id="applicantJobId" required>
+      </div>
+      <div class="form-group">
+        <label for="applicantSkills">Skills</label>
+        <textarea class="form-control" id="applicantSkills" rows="3" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="applicantEducation">Education</label>
+        <textarea class="form-control" id="applicantEducation" rows="3" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="applicantExperience">Experience</label>
+        <textarea class="form-control" id="applicantExperience" rows="3" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary" style="margin-top: 20px;">Create Applicant</button>
+    </form>
+  </div>
+  <script>
+    function createJobListing(event) {
+      event.preventDefault();
+      
+      var jobTitle = document.getElementById('jobTitle').value;
+      var jobLocation = document.getElementById('jobLocation').value;
+      var jobDescription = document.getElementById('jobDescription').value;
+      
+      var jobListingsContainer = document.getElementById('jobListings');
+      
+      var newJobCard = document.createElement('div');
+      newJobCard.classList.add('col-md-6');
+      newJobCard.innerHTML = `
+        <div class="job-card">
+          <h4>${jobTitle}</h4>
+          <p>${jobLocation}</p>
+          <p>Date Posted: ${getCurrentDate()}</p>
+          <p>Description: ${jobDescription}</p>
+          <button class="delete-button" onclick="deleteCard(this)">Delete</button>
+        </div>
+      `;
+      
+      jobListingsContainer.appendChild(newJobCard);
+      
+      document.getElementById('jobTitle').value = '';
+      document.getElementById('jobLocation').value = '';
+      document.getElementById('jobDescription').value = '';
+    }
+    
+    function createApplicant(event) {
+      event.preventDefault();
+      
+      var applicantName = document.getElementById('applicantName').value;
+      var applicantJob = document.getElementById('applicantJob').value;
+      var applicantJobId = document.getElementById('applicantJobId').value;
+      var applicantSkills = document.getElementById('applicantSkills').value;
+      var applicantEducation = document.getElementById('applicantEducation').value;
+      var applicantExperience = document.getElementById('applicantExperience').value;
+      
+      var applicantApplicationsContainer = document.getElementById('candidateApplications');
+      
+      var newApplicantCard = document.createElement('div');
+      newApplicantCard.classList.add('col-md-6');
+      newApplicantCard.innerHTML = `
+        <div class="applicant-card">
+          <h4>${applicantName}</h4>
+          <p>${applicantJob}</p>
+          <p>Job ID: ${applicantJobId}</p>
+          <div class="resume-section">
+            <h5>Skills</h5>
+            <p>${applicantSkills}</p>
+          </div>
+          <div class="resume-section">
+            <h5>Education</h5>
+            <p>${applicantEducation}</p>
+          </div>
+          <div class="resume-section">
+            <h5>Experience</h5>
+            <p>${applicantExperience}</p>
+          </div>
+          <button class="delete-button" onclick="deleteCard(this)">Delete</button>
+        </div>
+      `;
+      
+      applicantApplicationsContainer.appendChild(newApplicantCard);
+      
+      document.getElementById('applicantName').value = '';
+      document.getElementById('applicantJob').value = '';
+      document.getElementById('applicantJobId').value = '';
+      document.getElementById('applicantSkills').value = '';
+      document.getElementById('applicantEducation').value = '';
+      document.getElementById('applicantExperience').value = '';
+    }
+    
+    function deleteCard(button) {
+      var card = button.parentNode;
+      card.parentNode.removeChild(card);
+    }
+    
+    function getCurrentDate() {
+      var date = new Date();
+      var month = date.toLocaleString('default', { month: 'long' });
+      var day = date.getDate();
+      var year = date.getFullYear();
+      return month + ' ' + day + ', ' + year;
+    }
+  </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+</body>
+</html>
