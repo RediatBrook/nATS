@@ -61,14 +61,30 @@
 
     #mainNav{
       padding: 30px;
-      background-color: #000000;
+      background-color: #1BE4D4;
       color: #ffffff;
       width: 80%;
       margin: auto;
     }
+
+    .nav-link{
+      color: #ffffff;
+    }
+
+    .nav-link:hover{
+      color: #ffffff;
+    }
+
+    .nav-link.active{
+      color: #ffffff !important;
+    }
+
+    #searchButton:hover{
+      color: #1BE4D4;
+    }
   </style>
 <body>
-  <nav class="navbar navbar-expand-lg bg-body-tertiary " id="mainNav">
+  <nav class="navbar navbar-expand-lg"  id="mainNav">
     <div class="container-fluid">
       <a class="navbar-brand" href="#"></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -94,7 +110,7 @@
         </ul>
         <form class="d-flex" role="search">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" >
-          <button class="btn btn-outline-success" type="submit">Search</button>
+          <button class="btn btn-outline-light" id="searchButton" type="submit">Search</button>
         </form>
       </div>
     </div>
