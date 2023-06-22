@@ -152,7 +152,7 @@
     </div>
     
     <!-- Create New Applicant Card Form -->
-    <form onsubmit="createApplicant(event)">
+    <form onsubmit="createApplicantButton(event)">
       <div class="form-group">
         <label for="applicantName">Name</label>
         <input type="text" class="form-control" id="applicantName" required>
@@ -181,12 +181,15 @@
     </form>
   </div>
   <script>
-    function createJobListing(event) {
+    function createJobButton(event){
       event.preventDefault();
-      
+
       var jobTitle = document.getElementById('jobTitle').value;
       var jobLocation = document.getElementById('jobLocation').value;
       var jobDescription = document.getElementById('jobDescription').value;
+      createJobListing(jobTitle, jobLocation, jobDescription);
+    }
+    function createJobListing(jobTitle, jobLocation, jobDescription) {
       
       var jobListingsContainer = document.getElementById('jobListings');
       
@@ -208,16 +211,20 @@
       document.getElementById('jobLocation').value = '';
       document.getElementById('jobDescription').value = '';
     }
-    
-    function createApplicant(event) {
+
+    function createApplicantButton(event){
       event.preventDefault();
-      
+
       var applicantName = document.getElementById('applicantName').value;
       var applicantJob = document.getElementById('applicantJob').value;
       var applicantJobId = document.getElementById('applicantJobId').value;
       var applicantSkills = document.getElementById('applicantSkills').value;
       var applicantEducation = document.getElementById('applicantEducation').value;
       var applicantExperience = document.getElementById('applicantExperience').value;
+      createApplicant(applicantName, applicantJob, applicantJobId, applicantSkills, applicantEducation, applicantExperience);
+    }
+    
+    function createApplicant(applicantName, applicantJob, applicantJobId, applicantSkills, applicantEducation, applicantExperience) {
       
       var applicantApplicationsContainer = document.getElementById('candidateApplications');
       
