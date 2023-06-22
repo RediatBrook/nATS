@@ -1,4 +1,2 @@
 Flask==2.2.2
 boto3==1.26.157
-flask-session==0.4.0
-```
