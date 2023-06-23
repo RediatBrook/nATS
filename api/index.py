@@ -4,9 +4,12 @@ from flask import send_file, request
 import os 
 import openai
 import boto3 
+import pinecone
 from tenacity import retry, wait_random_exponential, stop_after_attempt
+import requests
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
+pinecone.init(api_key=os.getenv("PINECONE_API_KEY"), environment=os.getenv('PINECONE_ENVR')) 
 
 app = Flask(__name__)
 
@@ -85,3 +88,61 @@ def getEmbeding(text):
     #printing only for debugging purposes
     print(embedding)
     return embedding
+
+@app.route("/addVector/")
+#this is just because we currently have only one pod on the free version of pinecone
+def addVector():
+    index = pinecone.Index('hacksstart') 
+    vector = []
+    dataType = ''
+    if request.method=='GET':
+        vector = request.args.get("vector")
+        dataType = request.args.get("dataType")
+    elif request.method=='POST':
+        vector = request.form["vector"]
+        dataType = request.form.get("dataType")
+    upsert_response = index.upsert(
+        vectors=[
+            {
+            'id':'addtest3', 
+            'values': vector, 
+            'metadata':{'datatType': dataType}}
+            ]
+            ,
+        namespace='example-namespace'
+    )
+    print(upsert_response)
+    return "Vector successfully added!"
+
+
+
+@app.route("/saveData/")
+def saveData():
+    index = pinecone.Index('hacksstart') 
+    dataType = ''
+    text =''
+    id = ''
+    if request.method=='GET':
+        dataType = request.args.get("dataType")
+        text = request.args.get("text")
+        id = request.args.get("id")
+    elif request.method=='POST':
+        dataType = request.form["dataType"]
+        text = request.form["text"]
+        id = request.args.get("id")
+    vector = getEmbeding(text)    
+    upsert_response = index.upsert(
+        vectors=[
+            {
+            'id': id, 
+            'values':vector, 
+            'metadata':{'dataType': dataType}}
+        ],
+        namespace='example-namespace'
+    )
+    return "Data successfully saved!"
+    
+
+
+
+

@@ -2,3 +2,5 @@ Flask==2.2.2
 boto3==1.26.157
 openai==0.23.1
 tenacity==8.2.2
+pinecone-client==2.2.2
+requests==2.31.0
