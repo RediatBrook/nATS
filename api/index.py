@@ -136,7 +136,7 @@ def saveData():
             {
             'id': id, 
             'values':vector, 
-            'metadata':{'dataType': dataType}}
+            'metadata':{'dataType': dataType, 'content': text}}
         ],
         namespace='example-namespace'
     )
