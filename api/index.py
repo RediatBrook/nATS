@@ -8,6 +8,7 @@ import pinecone
 from tenacity import retry, wait_random_exponential, stop_after_attempt
 import requests
 
+
 openai.api_key = os.getenv("OPENAI_API_KEY")
 pinecone.init(api_key=os.getenv("PINECONE_API_KEY"), environment=os.getenv('PINECONE_ENVR')) 
 
@@ -143,6 +144,34 @@ def saveData():
     return "Data successfully saved!"
     
 
+@app.route("/saveToS3/")
+def saveToS3():
+    dataType = ''
+    text =''
+    id = ''
+    if request.method=='GET':
+        dataType = request.args.get("dataType")
+        text = request.args.get("text")
+        id = request.args.get("id")
+    elif request.method=='POST':
+        dataType = request.form["dataType"]
+        text = request.form["text"]
+        id = request.args.get("id")
+    
+    bucket_name = 'textfiledata'
+    key = dataType + '/' + id + '.txt'
 
+    # Create an S3 client using the system variables
+    session = boto3.Session()
 
+    # Create the S3 client
+    s3_client = session.client('s3')
 
+    # Upload text to S3
+    response = s3_client.put_object(
+        Bucket=bucket_name,
+        Key=key,
+        Body=text.encode('utf-8')
+    )
+    print(response)
+    return "Save to S3 is successful"
