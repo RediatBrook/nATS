@@ -3,86 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>notATS</title>
+    <title>nATS</title>
     <link rel="icon" type="image/x-icon" href="/static/logo2.PNG">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
 <style>
-  body {
-    background-color: #ffffff;
-  }
-  
-  .container {
-    background-color: #ffffff;
-    padding: 20px;
-    margin-top: 20px;
-  }
-  
-  h1, h2 {
-    color: #343a40;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .job-card,
-  .applicant-card {
-    position: relative;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-    border: 1px solid #dee2e6;
-    border-radius: 5px;
-    background-color: #ffffff;
-  }
-  
-  .delete-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    padding: 0;
-    border: none;
-    background: none;
-    color: red;
-    cursor: pointer;
-  }
-  
-  .resume-section {
-    margin-bottom: 20px;
-  }
-  
-  .resume-section h5 {
-    margin-bottom: 10px;
-  }
-  
-  .resume-section p {
-    margin: 0;
-  }
+    body {
+      background-color: #ffffff;
+    }
+    
+    .container {
+      background-color: #ffffff;
+      padding: 20px;
+      margin-top: 20px;
+    }
+    
+    h1, h2 {
+      color: #343a40;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .job-card,
+    .applicant-card {
+      position: relative;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      border: 1px solid #dee2e6;
+      border-radius: 5px;
+      background-color: #ffffff;
+    }
+    
+    .delete-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 0;
+      border: none;
+      background: none;
+      color: red;
+      cursor: pointer;
+    }
+    
+    .resume-section {
+      margin-bottom: 20px;
+    }
+    
+    .resume-section h5 {
+      margin-bottom: 10px;
+    }
+    
+    .resume-section p {
+      margin: 0;
+    }
 
-  #mainNav{
-    padding: 25px;
-    background-color: #1BE4D4;
-    color: #ffffff;
-    width: 100%;
-    margin: auto;
-  }
+    #mainNav{
+      padding: 25px;
+      background-color: #1BE4D4;
+      color: #ffffff;
+      width: 100%;
+      margin: auto;
+    }
 
-  .nav-link{
-    color: #ffffff;
-  }
+    .nav-link{
+      color: #ffffff;
+    }
 
-  .nav-link:hover{
-    color: #ffffff;
-  }
+    .nav-link:hover{
+      color: #ffffff;
+    }
 
-  .nav-link.active{
-    color: #ffffff !important;
-  }
+    .nav-link.active{
+      color: #ffffff !important;
+    }
 
-  #searchButton:hover{
-    color: #1BE4D4;
-  }
+    #searchButton:hover{
+      color: #1BE4D4;
+    }
   </style>
-<body>
+<body onload="getApplicants()">
   <nav class="navbar navbar-expand-lg" id="mainNav">
     <div class="container-fluid">
       <a class="navbar-brand" href="#"></a>
@@ -109,7 +109,7 @@
         </ul>
         <form class="d-flex" role="search">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" >
-          <button class="btn btn-outline-light" type="submit">Search</button>
+          <button class="btn btn-outline-light" id="searchButton" type="submit">Search</button>
         </form>
       </div>
     </div>
@@ -123,7 +123,7 @@
         <div class="applicant-card">
           <h4>John Doe</h4>
           <p>Software Engineer</p>
-          <p>Job ID: 123</p>
+          <p>Applicant ID: 123</p>
           <div class="resume-section">
             <h5>Skills</h5>
             <p>HTML, CSS, JavaScript</p>
@@ -145,7 +145,7 @@
         <div class="applicant-card">
           <h4>Jane Smith</h4>
           <p>UX Designer</p>
-          <p>Job ID: 456</p>
+          <p>Applicant ID: 456</p>
           <div class="resume-section">
             <h5>Skills</h5>
             <p>UI/UX Design, Wireframing</p>
@@ -177,7 +177,7 @@
         <input type="text" class="form-control" id="applicantJob" required>
       </div>
       <div class="form-group">
-        <label for="applicantJobId">Job ID</label>
+        <label for="applicantJobId">Applicant ID</label>
         <input type="number" class="form-control" id="applicantJobId" required>
       </div>
       <div class="form-group">
@@ -237,6 +237,22 @@
       var applicantEducation = document.getElementById('applicantEducation').value;
       var applicantExperience = document.getElementById('applicantExperience').value;
       createApplicant(applicantName, applicantJob, applicantJobId, applicantSkills, applicantEducation, applicantExperience);
+
+      let data = {
+        "name": applicantName,
+        "job": applicantJob,
+        "applicantID": applicantJobId,
+        "skills": applicantSkills,
+        "education": applicantEducation,
+        "experience": applicantExperience
+      };
+    fetch("/createApplicant/", {
+        "method": "POST",
+        "headers": {"Content-Type": "application/json"},
+        "body": JSON.stringify(data),
+    }).then(
+      console.log("Applicant Created")
+    )
     }
     
     function createApplicant(applicantName, applicantJob, applicantJobId, applicantSkills, applicantEducation, applicantExperience) {
@@ -288,6 +304,30 @@
       var year = date.getFullYear();
       return month + ' ' + day + ', ' + year;
     }
+
+    function getApplicants() {
+      fetch('/getApplicants/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({})
+      })
+      .then(response => response.json())
+      .then(data => {
+        Object.keys(data).forEach((entry) => {
+          console.log(entry);
+          const applicantName = data[entry].name;
+          const applicantJob = data[entry].job;
+          const applicantJobId = data[entry].jobId;
+          const applicantSkills = data[entry].skills;
+          const applicantEducation = data[entry].education;
+          const applicantExperience = data[entry].experience;
+          createApplicant(applicantName, applicantJob, applicantJobId, applicantSkills, applicantEducation, applicantExperience);
+        });
+      })
+      .catch(error => console.error('Error:', error));
+  };
   </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </body>

@@ -19,6 +19,7 @@ app.config['SESSION_TYPE'] = 'filesystem'
 @app.before_first_request
 def startSession():
     session["jobIds"] = []
+    session["applicantIds"] = []
 
 @app.route('/')
 def home():
@@ -278,3 +279,70 @@ def match():
 )
     qstring = query_response.to_str()
     return jsonify(qstring)
+
+@app.route("/createApplicant/", methods=['GET', 'POST'])
+def createApplicant():
+    print("Creating Applicant...")
+    name = ''
+    job = ''
+    applicantID = ''
+    skills = ''
+    education = ''
+    experience = ''
+    if request.method=='GET':
+        name = request.args.get("name")
+        job = request.args.get("job")
+        applicantID = request.args.get("applicantID")
+        skills = request.args.get("skills")
+        education = request.args.get("education")
+        experience = request.args.get("experience")
+    elif request.method=='POST':
+        name = request.json["name"]
+        job = request.json["job"]
+        applicantID = request.json["applicantID"]
+        skills = request.json["skills"]
+        education = request.json["education"]
+        experience = request.json["experience"]
+    session["applicantIds"].append(applicantID)
+    nameKey = applicantID + '-' + 'name'
+    jobKey = applicantID + '-' + 'job'
+    skillsKey = applicantID + '-' + 'skills'
+    educationKey = applicantID + '-' + 'education'
+    experienceKey = applicantID + "-" + 'experience'
+    session[nameKey] = name
+    session[jobKey] = job
+    session[skillsKey] = skills
+    session[educationKey] = education
+    session[experienceKey] = experience
+    resume = name + '\n\n' + job + '\n\n' + skills + '\n\n' + education + '\n\n' + experience
+    uploadData('Applicant', resume, applicantID)
+    print("Finished Creating Applicant!")
+    return "SUCCESS"
+
+@app.route("/getApplicants/", methods=['POST', 'GET'])
+def getApplicants():
+    print("Getting applicants..")
+    applicantIds = session["applicantIds"]
+    applicants = []
+    for id in applicantIds:
+        nameKey = id + '-' + 'name'
+        jobKey = id + '-' + 'job'
+        skillsKey = id + '-' + 'skills'
+        educationKey = id + '-' + 'education'
+        experienceKey = id + "-" + 'experience'
+        name = session[nameKey]
+        job = session[jobKey]
+        skills = session[skillsKey]
+        education = session[educationKey]
+        experience = session[experienceKey]
+        applicant = {
+            "applicantId": id,
+            "name": name,
+            "job": job,
+            "skills": skills,
+            "education": education,
+            "experience": experience
+        }
+        applicants.append(applicant)
+    print(applicants)
+    return jsonify(applicants)
