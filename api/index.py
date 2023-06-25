@@ -256,3 +256,25 @@ def handle_exception(e):
     error_message = "An error occurred. Please try again later."
     return jsonify(error=error_message), 500
 
+@app.route("/match/", methods=['GET','POST'])
+def match():
+    text = ""
+    if request.method=='GET':
+        text = request.args.get("text")
+    elif request.method=='POST':
+        inputVector = request.form["vector"]
+        text = request.form("text")
+    index = pinecone.Index('hacksstart') 
+    inputVector = getEmbeding(text)
+    query_response = index.query(
+    namespace='example-namespace',
+    top_k=1,
+    include_values=True,
+    include_metadata=True,
+    vector= inputVector,
+    filter={
+        'dataType': 'job'
+    }
+)
+    qstring = query_response.to_str()
+    return jsonify(qstring)
