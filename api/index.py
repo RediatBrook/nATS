@@ -346,3 +346,7 @@ def getApplicants():
         applicants.append(applicant)
     print(applicants)
     return jsonify(applicants)
+
+@app.route("/matches")
+def toMatch():
+    return render_template("matches.html")

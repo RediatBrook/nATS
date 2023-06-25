@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>nATS</title>
+    <title>notATS</title>
     <link rel="icon" type="image/x-icon" href="/static/logo2.PNG">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
@@ -33,6 +33,11 @@
       border: 1px solid #dee2e6;
       border-radius: 5px;
       background-color: #ffffff;
+    }
+    .job-card:hover{
+       background-color: #99ddd70e;
+       box-shadow: 1px 4px 6px rgba(71, 226, 200, 0.76);
+        color: white;
     }
     
     .delete-button {
@@ -92,13 +97,13 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 nav-underline">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="./">Jobs</a>
+            <a class="nav-link" aria-current="page" href="./">Jobs</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="./applicants">Applicants</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="./matches">Matches</a>
+            <a class="nav-link active" aria-current="page" href="#">Matches</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="#">Insights</a>
@@ -120,48 +125,34 @@
         
         <div class="row" id="jobListings">
           <div class="col-md-6">
+
             <div class="job-card">
+                <a href="matches/?id=78904" style="text-decoration: none; color:black" >
               <h4>Software Engineer</h4>
               <p>Job ID: 78904</p>
               <p>San Francisco, CA</p>
               <p>Date Posted: June 15, 2023</p>
-              <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla tincidunt consequat turpis ac cursus.</p>
               <button class="delete-button" onclick="deleteCard(this)">Delete</button>
+            </a>
             </div>
           </div>
+          
           <div class="col-md-6">
             <div class="job-card">
+                <a href="matches/?id=78904" style="text-decoration: none; color:black" >
               <h4>UX Designer</h4>
               <p>Job ID: 88753</p>
               <p>New York, NY</p>
               <p>Date Posted: June 16, 2023</p>
-              <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla tincidunt consequat turpis ac cursus.</p>
               <button class="delete-button" onclick="deleteCard(this)">Delete</button>
+                </a>
             </div>
           </div>
           <!-- Add more job cards here -->
         </div>
         
-        <!-- Create New Job Listing Form -->
-        <form onsubmit="createJobButton(event)">
-          <div class="form-group">
-            <label for="jobTitle">Job Title</label>
-            <input type="text" class="form-control" id="jobTitle" required>
-          </div>
-          <div class="form-group">
-            <label for="jobLocation">Location</label>
-            <input type="text" class="form-control" id="jobLocation" required>
-          </div>
-          <div class="form-group">
-            <label for="jobId">Job ID</label>
-            <input type="text" class="form-control" id="jobId" required>
-          </div>
-          <div class="form-group">
-            <label for="jobDescription">Description</label>
-            <textarea class="form-control" id="jobDescription" rows="3" required></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary" style="margin-top: 20px;">Create Job Listing</button>
-        </form>
+       
+      
       </div>
       <script>
         function createJobButton(event) {
