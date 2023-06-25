@@ -1,6 +1,6 @@
 from flask import Flask
 from flask import render_template
-from flask import send_file, request
+from flask import send_file, request, session, jsonify
 import os 
 import openai
 import boto3 
@@ -13,6 +13,12 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 pinecone.init(api_key=os.getenv("PINECONE_API_KEY"), environment=os.getenv('PINECONE_ENVR')) 
 
 app = Flask(__name__)
+app.secret_key = os.getenv("NATS_KEY")
+app.config['SESSION_TYPE'] = 'filesystem'
+
+@app.before_first_request
+def startSession():
+    session["jobIds"] = []
 
 @app.route('/')
 def home():
@@ -142,22 +148,8 @@ def saveData():
         namespace='example-namespace'
     )
     return "Data successfully saved!"
-    
-
-@app.route("/saveToS3/")
-def saveToS3():
-    dataType = ''
-    text =''
-    id = ''
-    if request.method=='GET':
-        dataType = request.args.get("dataType")
-        text = request.args.get("text")
-        id = request.args.get("id")
-    elif request.method=='POST':
-        dataType = request.form["dataType"]
-        text = request.form["text"]
-        id = request.args.get("id")
-    
+ 
+def uploadData(dataType, text, id):
     bucket_name = 'textfiledata'
     key = dataType + '/' + id + '.txt'
 
@@ -173,5 +165,73 @@ def saveToS3():
         Key=key,
         Body=text.encode('utf-8')
     )
-    print(response)
+    
+@app.route("/saveToS3/")
+def saveToS3():
+    dataType = ''
+    text =''
+    id = ''
+    if request.method=='GET':
+        dataType = request.args.get("dataType")
+        text = request.args.get("text")
+        id = request.args.get("id")
+    elif request.method=='POST':
+        dataType = request.form["dataType"]
+        text = request.form["text"]
+        id = request.args.get("id")
+        
+    uploadData(dataType, text, id)
+    #print(response)
     return "Save to S3 is successful"
+
+@app.route("/createJob/", methods=['GET', 'POST'])
+def createJob():
+    print("Creating Job...")
+    jobTitle = ''
+    jobDescription = ''
+    jobLocation = ''
+    jobId = ''
+    if request.method=='GET':
+        jobTitle = request.args.get("jobTitle")
+        jobDescription = request.args.get("jobDescription")
+        jobId = request.args.get("jobId")
+        jobLocation = request.args.get("jobLocation")
+    elif request.method=='POST':
+        jobTitle = request.json["jobTitle"]
+        jobDescription = request.json["jobDescription"]
+        jobId = request.json["jobId"]
+        jobLocation = request.json["jobLocation"]
+    session["jobIds"].append(jobId)
+    titleKey = jobId + '-' + 'title'
+    descriptionKey = jobId + '-' + 'description'
+    locationKey = jobId + '-' + 'location'
+    session[titleKey] = jobTitle
+    session[descriptionKey] = jobDescription
+    session[locationKey] = jobLocation
+    uploadData('Jobs', jobTitle, jobId)
+    print("Finished Creating Job!")
+    return "SUCCESS"
+
+@app.route("/getJobs/", methods=['POST', 'GET'])
+def getJobs():
+    print("Getting jobs..")
+    jobIds = session["jobIds"]
+    jobs = []
+    for id in jobIds:
+        titleKey = id + '-' + 'title'
+        descriptionKey = id + '-' + 'description'
+        locationKey = id + '-' + 'location'
+        title = session[titleKey]
+        description = session[descriptionKey]
+        location = session[locationKey]
+        job = {
+            "jobId": id,
+            "jobTitle": title,
+            "jobLocation": location,
+            "jobDescription": description
+        }
+        jobs.append(job)
+    print(jobs)
+    return jsonify(jobs)
+        
+    

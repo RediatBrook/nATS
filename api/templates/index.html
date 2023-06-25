@@ -9,14 +9,12 @@
 </head>
 <style>
     body {
-      background-color: #f8f9fa;
+      background-color: #ffffff;
     }
     
     .container {
       background-color: #ffffff;
-      border-radius: 5px;
       padding: 20px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       margin-top: 20px;
     }
     
@@ -30,10 +28,11 @@
     .applicant-card {
       position: relative;
       padding: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       margin-bottom: 20px;
       border: 1px solid #dee2e6;
       border-radius: 5px;
-      background-color: #f8f9fa;
+      background-color: #ffffff;
     }
     
     .delete-button {
@@ -60,10 +59,10 @@
     }
 
     #mainNav{
-      padding: 30px;
+      padding: 25px;
       background-color: #1BE4D4;
       color: #ffffff;
-      width: 80%;
+      width: 100%;
       margin: auto;
     }
 
@@ -83,7 +82,7 @@
       color: #1BE4D4;
     }
   </style>
-<body>
+<body onload="getJobs()">
   <nav class="navbar navbar-expand-lg"  id="mainNav">
     <div class="container-fluid">
       <a class="navbar-brand" href="#"></a>
@@ -123,6 +122,7 @@
           <div class="col-md-6">
             <div class="job-card">
               <h4>Software Engineer</h4>
+              <p>Job ID: 78904</p>
               <p>San Francisco, CA</p>
               <p>Date Posted: June 15, 2023</p>
               <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla tincidunt consequat turpis ac cursus.</p>
@@ -132,6 +132,7 @@
           <div class="col-md-6">
             <div class="job-card">
               <h4>UX Designer</h4>
+              <p>Job ID: 88753</p>
               <p>New York, NY</p>
               <p>Date Posted: June 16, 2023</p>
               <p>Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla tincidunt consequat turpis ac cursus.</p>
@@ -142,7 +143,7 @@
         </div>
         
         <!-- Create New Job Listing Form -->
-        <form onsubmit="createJobListing(event)">
+        <form onsubmit="createJobButton(event)">
           <div class="form-group">
             <label for="jobTitle">Job Title</label>
             <input type="text" class="form-control" id="jobTitle" required>
@@ -152,6 +153,10 @@
             <input type="text" class="form-control" id="jobLocation" required>
           </div>
           <div class="form-group">
+            <label for="jobId">Job ID</label>
+            <input type="text" class="form-control" id="jobId" required>
+          </div>
+          <div class="form-group">
             <label for="jobDescription">Description</label>
             <textarea class="form-control" id="jobDescription" rows="3" required></textarea>
           </div>
@@ -159,98 +164,90 @@
         </form>
       </div>
       <script>
-        function createJobButton(event){
+        function createJobButton(event) {
           event.preventDefault();
-    
+        
           var jobTitle = document.getElementById('jobTitle').value;
           var jobLocation = document.getElementById('jobLocation').value;
           var jobDescription = document.getElementById('jobDescription').value;
-          createJobListing(jobTitle, jobLocation, jobDescription);
+          var jobId = document.getElementById('jobId').value; 
+          createJobListing(jobTitle, jobLocation, jobDescription,jobId);
+          let data = {
+            "jobTitle": jobTitle,
+            "jobLocation": jobLocation,
+            "jobDescription": jobDescription,
+            "jobId": jobId,
         }
-        function createJobListing(jobTitle, jobLocation, jobDescription) {
-          
+        fetch("/createJob/", {
+            "method": "POST",
+            "headers": {"Content-Type": "application/json"},
+            "body": JSON.stringify(data),
+        }).then(
+          console.log("Job Created")
+        )
+        }
+        
+        function createJobListing(jobTitle, jobLocation, jobDescription, jobId) {
           var jobListingsContainer = document.getElementById('jobListings');
-          
+        
           var newJobCard = document.createElement('div');
           newJobCard.classList.add('col-md-6');
           newJobCard.innerHTML = `
             <div class="job-card">
               <h4>${jobTitle}</h4>
+              <p>Job ID: ${jobId}</p>
               <p>${jobLocation}</p>
               <p>Date Posted: ${getCurrentDate()}</p>
               <p>Description: ${jobDescription}</p>
               <button class="delete-button" onclick="deleteCard(this)">Delete</button>
             </div>
           `;
-          
+        
           jobListingsContainer.appendChild(newJobCard);
-          
+        
           document.getElementById('jobTitle').value = '';
           document.getElementById('jobLocation').value = '';
           document.getElementById('jobDescription').value = '';
         }
-    
-        function createApplicantButton(event){
-          event.preventDefault();
-    
-          var applicantName = document.getElementById('applicantName').value;
-          var applicantJob = document.getElementById('applicantJob').value;
-          var applicantJobId = document.getElementById('applicantJobId').value;
-          var applicantSkills = document.getElementById('applicantSkills').value;
-          var applicantEducation = document.getElementById('applicantEducation').value;
-          var applicantExperience = document.getElementById('applicantExperience').value;
-          createApplicant(applicantName, applicantJob, applicantJobId, applicantSkills, applicantEducation, applicantExperience);
-        }
         
-        function createApplicant(applicantName, applicantJob, applicantJobId, applicantSkills, applicantEducation, applicantExperience) {
-          
-          var applicantApplicationsContainer = document.getElementById('candidateApplications');
-          
-          var newApplicantCard = document.createElement('div');
-          newApplicantCard.classList.add('col-md-6');
-          newApplicantCard.innerHTML = `
-            <div class="applicant-card">
-              <h4>${applicantName}</h4>
-              <p>${applicantJob}</p>
-              <p>Job ID: ${applicantJobId}</p>
-              <div class="resume-section">
-                <h5>Skills</h5>
-                <p>${applicantSkills}</p>
-              </div>
-              <div class="resume-section">
-                <h5>Education</h5>
-                <p>${applicantEducation}</p>
-              </div>
-              <div class="resume-section">
-                <h5>Experience</h5>
-                <p>${applicantExperience}</p>
-              </div>
-              <button class="delete-button" onclick="deleteCard(this)">Delete</button>
-            </div>
-          `;
-          
-          applicantApplicationsContainer.appendChild(newApplicantCard);
-          
-          document.getElementById('applicantName').value = '';
-          document.getElementById('applicantJob').value = '';
-          document.getElementById('applicantJobId').value = '';
-          document.getElementById('applicantSkills').value = '';
-          document.getElementById('applicantEducation').value = '';
-          document.getElementById('applicantExperience').value = '';
+        
+        function getCurrentDate() {
+          var currentDate = new Date();
+          var year = currentDate.getFullYear();
+          var month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+          var day = currentDate.getDate().toString().padStart(2, '0');
+          return `${year}-${month}-${day}`;
         }
         
         function deleteCard(button) {
-          var card = button.parentNode;
-          card.parentNode.removeChild(card);
+          var jobCard = button.closest('.job-card');
+          jobCard.parentNode.removeChild(jobCard);
         }
+
         
-        function getCurrentDate() {
-          var date = new Date();
-          var month = date.toLocaleString('default', { month: 'long' });
-          var day = date.getDate();
-          var year = date.getFullYear();
-          return month + ' ' + day + ', ' + year;
-        }
+        //Function to getSession jobs on load
+        function getJobs() {
+          fetch('/getJobs/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({})
+          })
+          .then(response => response.json())
+          .then(data => {
+            Object.keys(data).forEach((entry) => {
+              console.log(entry);
+              const job = data[entry];
+              const jobTitle = job['jobTitle'];
+              const jobLocation = job['jobLocation'];
+              const jobDescription = job['jobDescription'];
+              const jobId = job['jobId'];
+              createJobListing(jobTitle, jobLocation, jobDescription, jobId);
+            });
+          })
+          .catch(error => console.error('Error:', error));
+      };
       </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </body>
