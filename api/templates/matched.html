@@ -2,6 +2,10 @@
 {% block title %}Index{% endblock %}
 {% block head %}
   {{ super() }}
+  <head>
+    <link rel="stylesheet" href="aos-by-red.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css"/>
+  </head>
   <style>
     #content, html, body {
         height: 98%;
@@ -20,16 +24,79 @@
         height: 100%;
         overflow: scroll;
     }
+/* start of new --commented above for now*/
+    *{
+  margin: 0;
+  padding: 0;
+}
+body{
+  font-size: 30px;
+  font-family: sans-serif;
+  background: #ebebeb;
+}
+.container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex-direction: column;
+}
+.div{
+   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
+  height: 300px;
+  width: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to right, #1cd8d2, #93edc7);
+  color: white;
+  margin: 100px 0;
+  border-radius: 7px;
+}
+
   </style>
 {% endblock %}
 {% block content %}
 <div id="main">
-    <div id="left"></div>
-    <div id="right"></div>
+    <div id="left">
+
+    </div>
+    <div class="right">
+        <div class="div">
+            I am div 1
+          </div>
+
+          <div class="div" data-aos="fade-left" data-aos-duration="1000" data-aos-once="true">
+            I am div 2
+          </div>
+
+          <div class="div" data-aos="fade-right">
+            I am div 3
+          </div>
+
+          <div class="div"  data-aos="fade-up">
+            I am div 4
+          </div>
+
+          <div class="div"  data-aos="zoom-in">
+            I am div 5
+          </div>
+
+          <div class="div" data-aos="flip-up">
+            I am div 6
+          </div>
+    </div>
 </div>
   
     <script>
         const element = document.getElementById('matchLink');
         element.classList.add('active');
+    </script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+      AOS.init({
+        duration: 3000,
+        once: true,
+      });
     </script>
 {% endblock %}

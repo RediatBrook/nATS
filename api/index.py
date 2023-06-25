@@ -98,7 +98,7 @@ def applicants():
     return render_template('applicants.html')
 
 @app.route("/getEmbedding/<text>")
-def getEmbeding(text):
+def getEmbedding(text):
     @retry(wait=wait_random_exponential(min=1, max=20), stop=stop_after_attempt(6))
     def get_embedding(text: str, model="text-embedding-ada-002") -> list[float]:
         return openai.Embedding.create(input=[text], model=model)["data"][0]["embedding"]
@@ -154,7 +154,7 @@ def saveData():
         dataType = request.form["dataType"]
         text = request.form["text"]
         id = request.args.get("id")
-    vector = getEmbeding(text)    
+    vector = getEmbedding(text)    
     upsert_response = index.upsert(
         vectors=[
             {
@@ -259,7 +259,7 @@ def handle_exception(e):
 
 def matchText(text):
     index = pinecone.Index('hacksstart') 
-    inputVector = getEmbeding(text)
+    inputVector = getEmbedding(text)
     query_response = index.query(
     namespace='example-namespace',
     top_k=1,
