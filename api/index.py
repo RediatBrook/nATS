@@ -40,47 +40,57 @@ def submit_resume(id):
 
 @app.route("/uploadToS3/")
 def uploadToS3():
-    text = request.args.get("text")
-    bucket_name = 'textfiledata'
-    person = str(request.args.get("person"))
-    key = 'testingfolder/' + person + '.txt'
+    try:
+        text = request.args.get("text")
+        bucket_name = 'textfiledata'
+        person = str(request.args.get("person"))
+        key = 'testingfolder/' + person + '.txt'
 
-    # Create an S3 client using the system variables
-    session = boto3.Session()
+        # Create an S3 client using the system variables
+        session = boto3.Session()
 
-    # Create the S3 client
-    s3_client = session.client('s3')
+        # Create the S3 client
+        s3_client = session.client('s3')
 
-    # Upload text to S3
-    response = s3_client.put_object(
-        Bucket=bucket_name,
-        Key=key,
-        Body=text.encode('utf-8')
-    )
+        # Upload text to S3
+        response = s3_client.put_object(
+            Bucket=bucket_name,
+            Key=key,
+            Body=text.encode('utf-8')
+        )
 
-    return "Uploaded text to S3"
+        return "Uploaded text to S3"   
+    except Exception as e:
+        app.logger.error(f"Error uploading to S3: {str(e)}")
+        error_message = "Error uploading to S3. Please try again later."
+        return jsonify(error=error_message), 500
 
 @app.route("/downloadFromS3/")
 def downloadFromS3():
-    bucket_name = 'textfiledata'
-    person = str(request.args.get("person"))
-    key = 'testingfolder/' + person + '.txt'
+    try:
+        bucket_name = 'textfiledata'
+        person = str(request.args.get("person"))
+        key = 'testingfolder/' + person + '.txt'
 
-    # Create an S3 client using the system variables
-    session = boto3.Session()
+        # Create an S3 client using the system variables
+        session = boto3.Session()
 
-    # Create the S3 client
-    s3_client = session.client('s3')
+        # Create the S3 client
+        s3_client = session.client('s3')
 
-    # Download text from S3
-    response = s3_client.get_object(
-        Bucket=bucket_name,
-        Key=key
-    )
+        # Download text from S3
+        response = s3_client.get_object(
+            Bucket=bucket_name,
+            Key=key
+        )
 
-    text = response['Body'].read().decode('utf-8')
+        text = response['Body'].read().decode('utf-8')
 
-    return "Downloaded text from S3: " + text
+        return "Downloaded text from S3: " + text
+    except Exception as e:
+        app.logger.error(f"Error downloading from S3: {str(e)}")
+        error_message = "Error downloading from S3. Please try again later."
+        return jsonify(error=error_message), 500
 
 @app.route("/applicants")
 def applicants():
@@ -99,27 +109,33 @@ def getEmbeding(text):
 @app.route("/addVector/")
 #this is just because we currently have only one pod on the free version of pinecone
 def addVector():
-    index = pinecone.Index('hacksstart') 
-    vector = []
-    dataType = ''
-    if request.method=='GET':
-        vector = request.args.get("vector")
-        dataType = request.args.get("dataType")
-    elif request.method=='POST':
-        vector = request.form["vector"]
-        dataType = request.form.get("dataType")
-    upsert_response = index.upsert(
-        vectors=[
-            {
-            'id':'addtest3', 
-            'values': vector, 
-            'metadata':{'datatType': dataType}}
-            ]
-            ,
-        namespace='example-namespace'
-    )
-    print(upsert_response)
-    return "Vector successfully added!"
+    try:
+        index = pinecone.Index('hacksstart') 
+        vector = []
+        dataType = ''
+        if request.method=='GET':
+            vector = request.args.get("vector")
+            dataType = request.args.get("dataType")
+        elif request.method=='POST':
+            vector = request.form["vector"]
+            dataType = request.form.get("dataType")
+        upsert_response = index.upsert(
+            vectors=[
+                {
+                'id':'addtest3', 
+                'values': vector, 
+                'metadata':{'datatType': dataType}}
+                ]
+                ,
+            namespace='example-namespace'
+        )
+        print(upsert_response)
+        return "Vector successfully added!"
+    except Exception as e:
+        app.logger.error(f"Error adding vector to Pinecone: {str(e)}")
+        error_message = "Error adding vector to Pinecone. Please try again later."
+        return jsonify(error=error_message), 500
+
 
 
 
@@ -234,4 +250,9 @@ def getJobs():
     print(jobs)
     return jsonify(jobs)
         
-    
+@app.errorhandler(Exception)
+def handle_exception(e):
+    app.logger.error(f"An error occurred: {str(e)}")
+    error_message = "An error occurred. Please try again later."
+    return jsonify(error=error_message), 500
+
