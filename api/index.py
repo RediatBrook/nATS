@@ -257,14 +257,7 @@ def handle_exception(e):
     error_message = "An error occurred. Please try again later."
     return jsonify(error=error_message), 500
 
-@app.route("/match/", methods=['GET','POST'])
-def match():
-    text = ""
-    if request.method=='GET':
-        text = request.args.get("text")
-    elif request.method=='POST':
-        inputVector = request.form["vector"]
-        text = request.form("text")
+def matchText(text):
     index = pinecone.Index('hacksstart') 
     inputVector = getEmbeding(text)
     query_response = index.query(
@@ -276,9 +269,20 @@ def match():
     filter={
         'dataType': 'job'
     }
-)
+    )
     qstring = query_response.to_str()
     return jsonify(qstring)
+
+@app.route("/match/", methods=['GET','POST'])
+def match():
+    text = ""
+    if request.method=='GET':
+        text = request.args.get("text")
+    elif request.method=='POST':
+        inputVector = request.form["vector"]
+        text = request.form("text")
+    response = matchText(text)
+    return response
 
 @app.route("/createApplicant/", methods=['GET', 'POST'])
 def createApplicant():
@@ -350,3 +354,29 @@ def getApplicants():
 @app.route("/matches")
 def toMatch():
     return render_template("matches.html")
+
+@app.route("/matched/")
+def toMatchWithJobId():
+    print("Matching...")
+    id = ''
+    if request.method=='GET':
+        id = request.args.get("id")
+    titleKey = id + '-' + 'title'
+    descriptionKey = id + '-' + 'description'
+    locationKey = id + '-' + 'location'
+    job = {
+        "jobId": id,
+        "title": session[titleKey],
+        "location": session[locationKey],
+        "description": session[descriptionKey]
+    }
+    embeddable = session[titleKey] + '\n\n' + session[descriptionKey]
+    print(embeddable)   
+    #results = matchText(embeddable)
+    #print(results)
+    # matchContents = {
+    #     "job": job,
+    #     "results": results
+    # }
+    print("Finished Matching!")
+    return render_template("matched.html")

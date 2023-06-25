@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+  {{ super() }}
+  <style>
+    #content, html, body {
+        height: 98%;
+    }
+    #left {
+        float: left;
+        width: 50%;
+        background: red;
+        height: 100%;
+        overflow: scroll;
+    }
+    #right {
+        float: left;
+        width: 50%;
+        background: blue;
+        height: 100%;
+        overflow: scroll;
+    }
+  </style>
+{% endblock %}
+{% block content %}
+<div id="main">
+    <div id="left"></div>
+    <div id="right"></div>
+</div>
+  
+    <script>
+        const element = document.getElementById('matchLink');
+        element.classList.add('active');
+    </script>
+{% endblock %}

@@ -127,7 +127,7 @@
           <div class="col-md-6">
 
             <div class="job-card">
-                <a href="matches/?id=78904" style="text-decoration: none; color:black" >
+                <a href="matched/?id=78904" style="text-decoration: none; color:black" >
               <h4>Software Engineer</h4>
               <p>Job ID: 78904</p>
               <p>San Francisco, CA</p>
@@ -139,7 +139,7 @@
           
           <div class="col-md-6">
             <div class="job-card">
-                <a href="matches/?id=78904" style="text-decoration: none; color:black" >
+                <a href="matched/?id=7894" style="text-decoration: none; color:black" >
               <h4>UX Designer</h4>
               <p>Job ID: 88753</p>
               <p>New York, NY</p>
@@ -184,13 +184,15 @@
           var newJobCard = document.createElement('div');
           newJobCard.classList.add('col-md-6');
           newJobCard.innerHTML = `
-            <div class="job-card">
-              <h4>${jobTitle}</h4>
+            <div class="job-card">` +
+              `<a href="matched/?id=${jobId}" style="text-decoration: none; color:black">`
+              + `<h4>${jobTitle}</h4>
               <p>Job ID: ${jobId}</p>
               <p>${jobLocation}</p>
               <p>Date Posted: ${getCurrentDate()}</p>
               <p>Description: ${jobDescription}</p>
               <button class="delete-button" onclick="deleteCard(this)">Delete</button>
+              </a>
             </div>
           `;
         
