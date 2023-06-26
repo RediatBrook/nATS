@@ -379,4 +379,4 @@ def toMatchWithJobId():
     #     "results": results
     # }
     print("Finished Matching!")
-    return render_template("matched.html")
+    return render_template("./aftermatch.html")
