@@ -361,17 +361,17 @@ def toMatchWithJobId():
     id = ''
     if request.method=='GET':
         id = request.args.get("id")
-    titleKey = id + '-' + 'title'
-    descriptionKey = id + '-' + 'description'
-    locationKey = id + '-' + 'location'
-    job = {
-        "jobId": id,
-        "title": session[titleKey],
-        "location": session[locationKey],
-        "description": session[descriptionKey]
-    }
-    embeddable = session[titleKey] + '\n\n' + session[descriptionKey]
-    print(embeddable)   
+    # titleKey = id + '-' + 'title'
+    # descriptionKey = id + '-' + 'description'
+    # locationKey = id + '-' + 'location'
+    # job = {
+    #     "jobId": id,
+    #     "title": session[titleKey],
+    #     "location": session[locationKey],
+    #     "description": session[descriptionKey]
+    # }
+    # embeddable = session[titleKey] + '\n\n' + session[descriptionKey]
+    # print(embeddable)   
     #results = matchText(embeddable)
     #print(results)
     # matchContents = {
