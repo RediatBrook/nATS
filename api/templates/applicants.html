@@ -265,7 +265,7 @@
         <div class="applicant-card">
           <h4>${applicantName}</h4>
           <p>${applicantJob}</p>
-          <p>Job ID: ${applicantJobId}</p>
+          <p>Applicant ID: ${applicantJobId}</p>
           <div class="resume-section">
             <h5>Skills</h5>
             <p>${applicantSkills}</p>
@@ -319,7 +319,7 @@
           console.log(entry);
           const applicantName = data[entry].name;
           const applicantJob = data[entry].job;
-          const applicantJobId = data[entry].jobId;
+          const applicantJobId = data[entry].applicantId;
           const applicantSkills = data[entry].skills;
           const applicantEducation = data[entry].education;
           const applicantExperience = data[entry].experience;
