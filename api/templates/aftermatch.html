@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>nATS</title>
+    <link rel="icon" type="image/x-icon" href="/static/logo2.PNG">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="aos-by-red.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css"/>
+</head>
+<style>
+    body {
+      background-color: #ffffff;
+    }
+    
+    .container {
+      background-color: #ffffff;
+      padding: 20px;
+      margin-top: 20px;
+    }
+    
+    h1, h2 {
+      color: #343a40;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .job-card,
+    .applicant-card {
+      position: relative;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      border: 1px solid #dee2e6;
+      border-radius: 5px;
+      background-color: #ffffff;
+    }
+    
+    .delete-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 0;
+      border: none;
+      background: none;
+      color: red;
+      cursor: pointer;
+    }
+    
+    .resume-section {
+      margin-bottom: 20px;
+    }
+    
+    .resume-section h5 {
+      margin-bottom: 10px;
+    }
+    
+    .resume-section p {
+      margin: 0;
+    }
+
+    #mainNav{
+      padding: 25px;
+      background-color: #1BE4D4;
+      color: #ffffff;
+      width: 100%;
+      margin: auto;
+    }
+
+    .nav-link{
+      color: #ffffff;
+    }
+
+    .nav-link:hover{
+      color: #ffffff;
+    }
+
+    .nav-link.active{
+      color: #ffffff !important;
+    }
+
+    #searchButton:hover{
+      color: #1BE4D4;
+    }
+
+
+/*STYLE FOR APPS COMING IN*/
+*{
+  margin: 0;
+  padding: 0;
+}
+/* body{
+  font-size: 30px;
+  font-family: sans-serif;
+  background: #ebebeb;
+} */
+.container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex-direction: column;
+}
+.div{
+   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
+  height: 300px;
+  width: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to right, #1cd8d2, #93edc7);
+  color: white;
+  margin: 100px 0;
+  border-radius: 7px;
+  
+}
+
+
+  </style>
+<body>
+  <nav class="navbar navbar-expand-lg"  id="mainNav">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 nav-underline">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="../">Jobs</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="../applicants">Applicants</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="../matches">Matches</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#">Insights</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="#">Settings</a>
+          </li>
+        </ul>
+        <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" >
+          <button class="btn btn-outline-light" id="searchButton" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+  
+    <!--THIS IS THE APPS ANIMATION-->
+    <div class="container">
+        
+                  <div class="div">
+                    Applicant 1 info
+                  </div>
+        
+                  <div class="div" data-aos="fade-left" data-aos-duration="1000" data-aos-once="true">
+                    Applicant 2 info
+                  </div>
+        
+                  <div class="div" data-aos="fade-right">
+                    Applicant 3 info
+                  </div>
+                  <div class="div"  data-aos="fade-up">
+                    <p></p>
+                  </div>
+                  <div class="div"  data-aos="zoom-in">
+                    I am div 5
+                  </div>
+        
+                  
+       
+            </div>
+      <script>
+        function createJobButton(event) {
+          event.preventDefault();
+        
+          var jobTitle = document.getElementById('jobTitle').value;
+          var jobLocation = document.getElementById('jobLocation').value;
+          var jobDescription = document.getElementById('jobDescription').value;
+          var jobId = document.getElementById('jobId').value; 
+          createJobListing(jobTitle, jobLocation, jobDescription,jobId);
+          let data = {
+            "jobTitle": jobTitle,
+            "jobLocation": jobLocation,
+            "jobDescription": jobDescription,
+            "jobId": jobId,
+        }
+        fetch("/createJob/", {
+            "method": "POST",
+            "headers": {"Content-Type": "application/json"},
+            "body": JSON.stringify(data),
+        }).then(
+          console.log("Job Created")
+        )
+        }
+        
+        function createJobListing(jobTitle, jobLocation, jobDescription, jobId) {
+          var jobListingsContainer = document.getElementById('jobListings');
+        
+          var newJobCard = document.createElement('div');
+          newJobCard.classList.add('col-md-6');
+          newJobCard.innerHTML = `
+            <div class="job-card">
+              <h4>${jobTitle}</h4>
+              <p>Job ID: ${jobId}</p>
+              <p>${jobLocation}</p>
+              <p>Date Posted: ${getCurrentDate()}</p>
+              <p>Description: ${jobDescription}</p>
+              <button class="delete-button" onclick="deleteCard(this)">Delete</button>
+            </div>
+          `;
+        
+          jobListingsContainer.appendChild(newJobCard);
+        
+          document.getElementById('jobTitle').value = '';
+          document.getElementById('jobLocation').value = '';
+          document.getElementById('jobDescription').value = '';
+        }
+        
+        
+        function getCurrentDate() {
+          var currentDate = new Date();
+          var year = currentDate.getFullYear();
+          var month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+          var day = currentDate.getDate().toString().padStart(2, '0');
+          return `${year}-${month}-${day}`;
+        }
+        
+        function deleteCard(button) {
+          var jobCard = button.closest('.job-card');
+          jobCard.parentNode.removeChild(jobCard);
+        }
+
+        
+        //Function to getSession jobs on load
+        function getJobs() {
+          fetch('/getJobs/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({})
+          })
+          .then(response => response.json())
+          .then(data => {
+            Object.keys(data).forEach((entry) => {
+              console.log(entry);
+              const job = data[entry];
+              const jobTitle = job['jobTitle'];
+              const jobLocation = job['jobLocation'];
+              const jobDescription = job['jobDescription'];
+              const jobId = job['jobId'];
+              createJobListing(jobTitle, jobLocation, jobDescription, jobId);
+            });
+          })
+          .catch(error => console.error('Error:', error));
+      };
+      </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+   
+    <script>
+      AOS.init({
+        duration: 3000,
+        once: true,
+      });
+    
+    </script>
+</body>
+</html>
