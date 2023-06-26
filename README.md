@@ -53,3 +53,14 @@ flask run
 2. Access the web application in your browser at http://localhost:5000.
 
 3. Use the various features provided by the nATS web application to manage jobs, applicants, and match resumes to job descriptions effectively.
+
+## Project Name: nATS - nATS Applicant Tracking System
+
+The name of our project, nATS, holds an interesting history that reflects its evolution and purpose. Originally, it stood for "new Applicant Tracking System," signifying our aim to create a modern and innovative solution for managing applicants in the recruitment process.
+
+As the project progressed, we embraced the uniqueness of our approach and decided to emphasize the departure from traditional applicant tracking systems. Thus, nATS also became an acronym for "not a Traditional tracking system," highlighting the novel features and capabilities we introduced.
+
+Finally, nATS evolved into a self-referencing recursive acronym, representing "nATS Applicant tracking system."
+
+This name transformation encapsulates the project's evolution.
+.
